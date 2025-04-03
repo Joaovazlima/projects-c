@@ -1,274 +1,55 @@
-=========================================================================================================================================================================================================
-#include <stdio.h>
-#include <stdlib.h>
+ Lista de Comandos SQL Essenciais
+1️⃣ Banco de Dados
+CREATE DATABASE nome_do_banco; → Cria um banco de dados.
 
-void bubbleSort(double arr[], int n){
-	int i, j, temp;
-	
-	for(i = 0; i < n - 1; i++){
-		for(j = 0; j < n - i -1; j++){
-			if(arr[j] < arr[j+1]){
-				temp = arr[j];
-				arr[j]= arr[j+1];
-				arr[j+1]= temp;
-			}
-		}
-	}
-}
+USE nome_do_banco; → Seleciona um banco de dados para uso.
 
-void insertionSort(double arr[], int n){
-	int i, j;
-	double key;
-	
-	for(i = 1; i < n; ++i){
-		key = arr[i];
-		j = i - 1;
-		
-		while(j >= 0 && arr[j] > key){
-			arr[j + 1] = arr [j];
-			j = j - 1;
-		}
-		arr[j + 1] = key;
-	}
-}
+DROP DATABASE nome_do_banco; → Exclui um banco de dados.
 
-main (){
-	double arr[] = { 6.0, 1.0, 10.0, 3.0, 7.0, 7.2, 7.8, 8.9, 1.7};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	
-	bubbleSort(arr, n);
-	int i;
-	printf("as notas sao: ");
-	for(i=0; i < n; i++){
-		printf("%.1f/ ", arr[i]);
-	}
-	
-	
-	insertionSort(arr, n);
-	printf("as notas sao:");
-	for (i = 0; i < n; i++){
-		printf("%.1f/ ", arr[1]);
-    }
-    return 0;
-}	
+2️⃣ Tabelas
+CREATE TABLE nome_da_tabela (coluna1 tipo, coluna2 tipo, ...); → Cria uma tabela.
 
-============================================================================================================================================================================================================================
+DROP TABLE nome_da_tabela; → Exclui uma tabela.
 
-#include <stdio.h>
+ALTER TABLE nome_da_tabela ADD nova_coluna tipo; → Adiciona uma coluna na tabela.
 
-void bubbleSort(int arr[], int n){
-  int i, j, temp;
-  
-  for(i=0; i < n-1; i++){
-    for(j = 0; j < n - i -1; j++){
-      if(arr[j] > arr[j+1]){
-        temp=arr[j];
-        arr[j] =arr[j+1];
-        arr[j+1]=temp;
-      }
-    }
-  }
-}
+ALTER TABLE nome_da_tabela DROP COLUMN nome_da_coluna; → Remove uma coluna da tabela.
 
-int main(){
-  int arr[] = {43, 98, 100, 78, 3432, 23847, 448, 39283, 390, 20, 1, 29329, 384, 349, 354, 39470};
-  int n = sizeof(arr) / sizeof(arr[0]);
-  int i;
-  
-  bubbleSort(arr, n);
-  
-  for(i =0; i<n; i++){
-    printf("%d ", arr[i]);
-  }
-return 0;
-}
+3️⃣ Inserção de Dados
+INSERT INTO nome_da_tabela (coluna1, coluna2) VALUES (valor1, valor2); → Insere dados na tabela.
 
-==========================================================================================================================================================================================================================
+INSERT INTO nome_da_tabela VALUES (valor1, valor2, valor3); → Insere dados sem especificar colunas.
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+4️⃣ Seleção de Dados (Consultas)
+SELECT * FROM nome_da_tabela; → Retorna todos os registros da tabela.
 
-void bubble_sort(double arr[], int n) {
-    int i, j, swapped;
-    double temp;
-    for (i = 0; i < n - 1; i++) {
-        swapped = 0;
-        for (j = 0; j < n - i - 1; j++) {
-            if (arr[j] > arr[j + 1]) {
-                temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-                swapped = 1;
-            }
-        }
-        if (!swapped) break;
-    }
-}
+SELECT coluna1, coluna2 FROM nome_da_tabela; → Retorna apenas colunas específicas.
 
-void insertion_sort(double arr[], int n) {
-    int i, j;
-    double key;
-    for (i = 1; i < n; i++) {
-        key = arr[i];
-        j = i - 1;
-        while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
-            j = j - 1;
-        }
-        arr[j + 1] = key;
-    }
-}
+SELECT * FROM nome_da_tabela WHERE coluna = valor; → Filtra registros com base em uma condição.
 
-double measure_time(void (*sort_function)(double[], int), double arr[], int n) {
-    clock_t start, end;
-    double *copy;
-    int i;
-    copy = malloc(n * sizeof(double));
-    for (i = 0; i < n; i++) copy[i] = arr[i];
-    start = clock();
-    sort_function(copy, n);
-    end = clock();
-    free(copy);
-    return ((double)(end - start)) / CLOCKS_PER_SEC;
-}
+SELECT * FROM nome_da_tabela ORDER BY coluna ASC/DESC; → Ordena os registros de forma crescente (ASC) ou decrescente (DESC).
 
-void generate_random_array(double arr[], int n) {
-    int i;
-    for (i = 0; i < n; i++) {
-        arr[i] = ((double)rand() / RAND_MAX) * 10.0;
-    }
-}
+SELECT * FROM nome_da_tabela WHERE coluna BETWEEN valor1 AND valor2; → Filtra registros dentro de um intervalo.
 
-int main() {
-    srand(time(NULL));
-    int sizes[] = {10, 100, 1000};
-    int i, size;
-    double *data;
-    for (i = 0; i < 3; i++) {
-        size = sizes[i];
-        data = malloc(size * sizeof(double));
-        generate_random_array(data, size);
+SELECT DISTINCT coluna FROM nome_da_tabela; → Retorna valores únicos de uma coluna.
 
-        printf("Tamanho do conjunto: %d\n", size);
-        printf("Bubble Sort: %.6f segundos\n", measure_time(bubble_sort, data, size));
-        printf("Insertion Sort: %.6f segundos\n\n", measure_time(insertion_sort, data, size));
+SELECT COUNT(*) FROM nome_da_tabela; → Conta o número de registros da tabela.
 
-        free(data);
-    }
-    return 0;
-}
+SELECT AVG(coluna) FROM nome_da_tabela; → Retorna a média dos valores de uma coluna numérica.
 
-===================================================================================================================================================================================================================
+SELECT SUM(coluna) FROM nome_da_tabela; → Soma os valores de uma coluna numérica.
 
-#include <stdio.h>
+SELECT MIN(coluna), MAX(coluna) FROM nome_da_tabela; → Retorna o menor e o maior valor de uma coluna.
 
-typedef struct {
-    char nome[30];
-    double preco;
-} Produto;
+5️⃣ Atualização de Dados
+UPDATE nome_da_tabela SET coluna = novo_valor WHERE condição; → Atualiza valores de uma coluna.
 
-void bubble_sort(Produto p[], int n) {
-    int i, j;
-    Produto temp;
-    for (i = 0; i < n - 1; i++) {
-        for (j = 0; j < n - i - 1; j++) {
-            if (p[j].preco > p[j + 1].preco) {
-                temp = p[j];
-                p[j] = p[j + 1];
-                p[j + 1] = temp;
-            }
-        }
-    }
-}
+6️⃣ Exclusão de Dados
+DELETE FROM nome_da_tabela WHERE condição; → Remove registros da tabela.
 
-void selection_sort(Produto p[], int n) {
-    int i, j, min;
-    Produto temp;
-    for (i = 0; i < n - 1; i++) {
-        min = i;
-        for (j = i + 1; j < n; j++) {
-            if (p[j].preco < p[min].preco) {
-                min = j;
-            }
-        }
-        temp = p[min];
-        p[min] = p[i];
-        p[i] = temp;
-    }
-}
+TRUNCATE TABLE nome_da_tabela; → Remove todos os registros da tabela sem apagar sua estrutura.
 
-void imprimir(Produto p[], int n) {
-    int i;
-    for (i = 0; i < n; i++) {
-        printf("%s - R$ %.2f\n", p[i].nome, p[i].preco);
-    }
-    printf("\n");
-}
+7️⃣ Chaves e Relacionamentos
+PRIMARY KEY (coluna); → Define uma chave primária.
 
-int main() {
-    int i, n;
-    Produto produtos[] = {
-        {"Teclado", 120.0}, {"Mouse", 50.0}, {"Monitor", 800.0},
-        {"Notebook", 3500.0}, {"Fone", 90.0}, {"Cadeira", 950.0}
-    };
-    n = sizeof(produtos) / sizeof(produtos[0]);
-
-    Produto p1[n], p2[n];
-    for (i = 0; i < n; i++) {
-        p1[i] = produtos[i];
-        p2[i] = produtos[i];
-    }
-
-    bubble_sort(p1, n);
-    printf("Ordenado com Bubble Sort:\n");
-    imprimir(p1, n);
-
-    selection_sort(p2, n);
-    printf("Ordenado com Selection Sort:\n");
-    imprimir(p2, n);
-
-    return 0;
-}
-
-
-========================================================================================================================================================================================================================
-
-#include <stdio.h>
-
-void selectionSort(int arr[], int n){
-	int i, j, min_idx, temp;
-		
-	for(i = 0; i < n -1; i++){
-		min_idx = i;
-			
-		for(j = i + 1; j < n; j++){
-			if(arr[j] < arr[min_idx]){
-				min_idx = j;
-		
-			}
-		}
-		temp = arr[i];
-		arr[i] = arr[min_idx];
-		arr[min_idx]= temp;
-	}
-}
-
-int main () {
-	int arr [] = {43, 98, 100, 78, 3432, 23847, 448, 39283, 390, 20, 1, 29329, 384, 349, 354, 39470};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	
-	
-	selectionSort(arr, n);
-	int i;
-	
-	for(i = 0; i < n; i ++){
-		printf("%d ", arr[i]);
-		
-	}
-	
-	return 0;
-}
-
-===================================================================================================================================================================================================================================
-
+FOREIGN KEY (coluna) REFERENCES outra_tabela(coluna); → Define uma chave estrangeira.
